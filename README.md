@@ -1,6 +1,6 @@
 # Getting Started
 
-Welcome to your new project.
+Deploy SAP CAP to SAP CP, Kyma runtime using private AWS ECR image and github action
 
 It contains these folders and files, following our recommended project layout:
 
@@ -10,16 +10,23 @@ File or Folder | Purpose
 `db/` | your domain models and data go here
 `srv/` | your service models and code go here
 `package.json` | project metadata and configuration
-`readme.md` | this getting started guide
+`Dockerfile` | configuration to create a image on AWS ECR
+`kyma2\.github\workflows\deploy.yml` | Github pipeline setup to Build, tag, and push image to Amazon ECR
+`deployment_kube.yaml` | Kubernets deployment configuration file
 
+## Steps
 
-## Next Steps
-
-- Open a new terminal and run `cds watch` 
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
-
-
-## Learn More
-
-Learn more at https://cap.cloud.sap/docs/get-started/.
+- Create a CAP project using CAP template (without mta module).
+- Configure the Package.json 
+- open new terminal and run `npm install`
+- Register for a AWS trail account and Create a private AWS ECR repository 
+- Create a github pipeline to build, run, push the docker image to AWS by configuring the secrets
+- Create a `secret` and its type as `kubernetes.io/dockerconfigjson` in kubernetes with the below comment.
+   `kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=AWS --docker-password=<your-pword> --docker-email=<your-email>`
+- Create a `configmap` in kubernets to store the hava vcap variable (similar to `default-env.json`)
+- Create a deployment file by providing the secret and configmap details to the containers and expose as a service to consume outside the kyma.
+  `kubectl create -f <deplyment.file.name> --record`
+  `kubectl set image deployment/kyma2 containername=newimagename --record`
+  `kubectl rollout status deployment/kyma2`
+  `kubectl rollout history deployment/kyma2`
+  `kubectl rollout undo deployment/kyma2`

@@ -16,11 +16,11 @@ spec:
         - name: regcred
       containers:
       - name: kyma2
-        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:latest
+        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:8e22f760bd4560571e38f65cc8599ccd29891b38
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
-              name: appconfig
+              name: appconfig 
         resources:
           limits:
             memory: "1000Mi"
