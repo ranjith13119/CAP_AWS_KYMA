@@ -16,7 +16,7 @@ spec:
         - name: regcred
       containers:
       - name: kyma2
-        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:c415dd217ebcfca51e57dc9eb2ca78e1f679f704
+        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:latest
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
