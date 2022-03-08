@@ -1,6 +1,6 @@
 # Getting Started
 
-Deploy SAP CAP to SAP CP, Kyma runtime using private AWS ECR image and github action
+## Deploy SAP CAP to SAP Cloud Plateform, Kyma runtime using Private AWS ECR image and github action
 
 It contains these folders and files, following our recommended project layout:
 
@@ -18,15 +18,15 @@ File or Folder | Purpose
 
 - Create a CAP project using CAP template (without mta module).
 - Configure the Package.json 
-- open new terminal and run `npm install`
+- Open new terminal and run `npm install`
 - Register for a AWS trail account and Create a private AWS ECR repository 
 - Create a github pipeline to build, run, push the docker image to AWS by configuring the secrets
 - Create a `secret` and its type as `kubernetes.io/dockerconfigjson` in kubernetes with the below comment.
    `kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=AWS --docker-password=<your-pword> --docker-email=<your-email>`
 - Create a `configmap` in kubernets to store the hava vcap variable (similar to `default-env.json`)
 - Create a deployment file by providing the secret and configmap details to the containers and expose as a service to consume outside the kyma.
-  `kubectl create -f <deplyment.file.name> --record`
-  `kubectl set image deployment/kyma2 containername=newimagename --record`
-  `kubectl rollout status deployment/kyma2`
-  `kubectl rollout history deployment/kyma2`
-  `kubectl rollout undo deployment/kyma2`
+- `kubectl create -f <deplyment.file.name> --record`
+- `kubectl set image deployment/kyma2 containername=newimagename --record`
+- `kubectl rollout status deployment/kyma2`
+- `kubectl rollout history deployment/kyma2`
+- `kubectl rollout undo deployment/kyma2`
