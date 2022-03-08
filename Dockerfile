@@ -11,4 +11,4 @@ COPY /. .
 
 EXPOSE 4004
 
-CMD ["npm", "run"]
+CMD ["npm", "start"]

@@ -1,3 +1,6 @@
 node_modules/
 npm-debug.log
 default-*.json
+secret_kube.yaml
+kubtctl-aws-secret.sh
+hana-configmap_kube.yaml

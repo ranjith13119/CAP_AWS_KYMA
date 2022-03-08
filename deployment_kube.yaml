@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kyma2
+spec:
+  selector:
+    matchLabels:
+      app: kyma2
+  template:
+    metadata:
+      labels:
+        app: kyma2
+        version: v1
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: kyma2
+        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:c415dd217ebcfca51e57dc9eb2ca78e1f679f704
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: appconfig
+        resources:
+          limits:
+            memory: "1000Mi"
+          requests:
+            memory: "32Mi"
+        ports:
+        - name: http
+          containerPort: 4004
+
+---
+# to expose our service outside the kyma
+apiVersion: v1 
+kind: Service
+metadata:
+  name: kyma2
+  labels:
+    app: kyma2
+spec:
+  selector:
+    app: kyma2
+  ports:
+  - port: 4004
+    targetPort: 4004
+    name: http
+

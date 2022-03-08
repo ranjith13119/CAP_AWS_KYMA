@@ -7,6 +7,9 @@ default-*.json
 gen/
 node_modules/
 target/
+secret_kube.yaml
+kubtctl-aws-secret.sh
+hana-configmap_kube.yaml
 
 # Web IDE, App Studio
 .che/
