@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ecr-registry-helper-secrets
+  namespace: default
+stringData:
+  AWS_SECRET_ACCESS_KEY: "N+Z+mG6bH4NXzFNORanLZZE7Yb4Kn1EH3JQjK0Ef"
+  AWS_ACCESS_KEY_ID: "AKIA4QVT7FBPPAIRPZOv"
+  AWS_ACCOUNT: "860444633181"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecr-registry-helper-cm
+  namespace: default
+data:
+  AWS_REGION: "us-east-1"
+  DOCKER_SECRET_NAME: regcred
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ecr-registry-helper
+  namespace: default
+spec:
+  schedule: "*/10 * * * *"
+  successfulJobsHistoryLimit: 3
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: kyma2
+            version: v1
+        spec:
+          serviceAccountName: sa-health-check
+          containers:
+            - name: kyma2
+              image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:8e22f760bd4560571e38f65cc8599ccd29891b38
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: ecr-registry-helper-secrets
+                - configMapRef:
+                    name: ecr-registry-helper-cm
+                - configMapRef:
+                    name: appconfig
+              resources:
+                limits:
+                  memory: "1000Mi"
+                requests:
+                  memory: "32Mi"
+              ports:
+                - name: http
+                  containerPort: 4004
+              command:
+                - /bin/sh
+                - -c
+                - |-
+                  ECR_TOKEN=`aws ecr get-login-password --region ${AWS_REGION}`
+                  NAMESPACE_NAME=default
+                  kubectl delete secret --ignore-not-found $DOCKER_SECRET_NAME -n $NAMESPACE_NAME
+                  kubectl create secret docker-registry $DOCKER_SECRET_NAME \
+                  --docker-server=https://${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
+                  --docker-username=AWS \
+                  --docker-password="${ECR_TOKEN}" \
+                  --namespace=$NAMESPACE_NAME
+                  echo "Secret was successfully updated at $(date)"
+          restartPolicy: Never
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-health-check
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: role-full-access-to-secrets
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["regcred"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: health-check-role-binding
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: sa-health-check
+    namespace: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: role-full-access-to-secrets
+  apiGroup: ""
+---
+# to expose our service outside the kyma
+apiVersion: v1
+kind: Service
+metadata:
+  name: kyma2
+  labels:
+    app: kyma2
+spec:
+  selector:
+    app: kyma2
+  ports:
+    - port: 4004
+      targetPort: 4004
+      name: http
