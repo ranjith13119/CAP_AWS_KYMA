@@ -23,6 +23,7 @@ File or Folder | Purpose
 - Create a github pipeline to build, run, push the docker image to AWS by configuring the secrets
 - Create a `secret` and its type as `kubernetes.io/dockerconfigjson` in kubernetes with the below comment.
    `kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=AWS --docker-password=<your-pword> --docker-email=<your-email>`
+   `kubectl create secret docker-registry --dry-run=client $secret_name docker-server=<DOCKER_REGISTRY_SERVER --docker-username=<DOCKER_USER> --docker-password=<DOCKER_PASSWORD>  --docker-email=<DOCKER_EMAIL> -o yaml > docker-secret.yaml`
 - Create a `configmap` in kubernets to store the hava vcap variable (similar to `default-env.json`)
 - Create a deployment file by providing the secret and configmap details to the containers and expose as a service to consume outside the kyma.
 - `kubectl create -f <deplyment.file.name> --record`
