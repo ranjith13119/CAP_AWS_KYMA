@@ -12,21 +12,12 @@
         "resources": "resources.json",
         "dataSources": {
             "mainService": {
-                "uri": "/V2/Northwind/Northwind.svc/",
+                "uri": "V2/Northwind/Northwind.svc/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
                     "localUri": "localService/metadata.xml",
                     "odataVersion": "2.0"
-                }
-            },
-            "kymaService": {
-                "uri": "/catalog-service-latest/",
-                "type": "OData",
-                "settings": {
-                    "annotations": [],
-                    "localUri": "localService/metadata.xml",
-                    "odataVersion": "4.0"
                 }
             }
         },
@@ -90,11 +81,6 @@
             },
             "": {
                 "dataSource": "mainService",
-                "preload": true,
-                "settings": {}
-            },
-            "kyma": {
-                "dataSource": "kymaService",
                 "preload": true,
                 "settings": {}
             }
