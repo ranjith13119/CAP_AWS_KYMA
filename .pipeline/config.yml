@@ -1,48 +1,90 @@
+# ### General project setup
+# general:
+#   buildTool: "docker"
+#   dockerConfigJsonSecretTextCredentialsId: "AWS-ECR"
+#   containerImageName: ""                              # (optional) set this parameter if you want to release or push your application during build
+#   containerImageTag: ""                               # (optional) set this parameter if you want to release or push your application during build
+#   containerRegistryUrl: ""                             # (optional) set this parameter if you want to release or push your application during build
+
+
+# ### Step-specific configuration
+# steps:
+#     kanikoExecute:
+#       dockerfilePath: "Docker"                              # (optional) default: "Dockerfile"
+
+# ### Stage-specific configuration
+# stages:
+#     "Confirm":
+#         manualConfirmation: false
+#     Build:
+#         kanikoExecute: true                             # true, if you want to turn the build stage on for creating a container image (default: false)
+
+#     Additional Unit Tests:
+#         karmaExecuteTests: false # true, if you want to execute the Karma Test Runner (default: false)
+#         npmExecuteScripts: false # true, if you want to execute test scripts that are defined in step npmExecuteScripts
+
+#     # Stages configuration specific only to the "kubectl" deployment tool
+  
+#     Acceptance:
+#       kubernetesDeploy: false                             # true, if you want to turn the acceptance stage on for executing automated end-to-end acceptance tests (default: false)
+#       kubeConfigSecretTextCredentialsId: "AWS-ECR" 
+#       deployTool: "kubectl" 
+#       namespace: "default"                           # specify the name of the Kubernetes namespace where you want to test your application (default: "default")
+#       createDockerRegistrySecret: true                   # (optional) true, if you want to save the secret in your Kubernetes cluster
+#       appTemplate: "k8s/deployment.yaml"          # enter the path to your apptemplate.yaml file
+#       deployCommand: "apply"                             # (optional) or "replace" if you want to update and replace an already existing resource (default: apply) 
+#       force: false                                        # (only for deployCommand "replace") true, if you want to add a force tag to your deployment (default: true)
+
+#     # Stages configuration specific only to the "kubectl" deployment tool
+
+#     Release:
+#       kubernetesDeploy: true                                # true, if you want to turn the release stage on for deployment to a Kubernetes namespace within the specified Kubernetes cluster (default: false)
+#       kubeConfigSecretTextCredentialsId: "AWS-ECR"
+#       deployTool: "kubectl"                                   
+#       namespace: "default"                              # (optional) specify the name of the Kubernetes namespace (default: "default")
+#       createDockerRegistrySecret: true                      # (optional) true, if you want to save the secret in your Kubernetes cluster
+#       appTemplate: "k8s/deployment.yaml"             # enter the path to your apptemplate.yaml file
+#       deployCommand: "apply"                                # (optional) or "replace" if you want to update and replace an already existing resource (default: apply) 
+#       force: true                                           # (only for deployCommand "replace") true, if you want to add a force tag to your deployment
+###
+# This file configures the project "Piper" pipeline of your project.
+# For a reference of the configuration concept and available options, please have a look into its documentation.
+#
+# The documentation for the most recent pipeline version can always be found at:
+#    https://sap.github.io/jenkins-library/
+#
+# This is a YAML-file. YAML is an indentation-sensitive file format. Please make sure to properly indent changes to it.
+###
+
+
+
 ### General project setup
 general:
-  buildTool: "docker"
-  dockerConfigJsonSecretTextCredentialsId: "AWS-ECR"
-  containerImageName: ""                              # (optional) set this parameter if you want to release or push your application during build
-  containerImageTag: ""                               # (optional) set this parameter if you want to release or push your application during build
-  containerRegistryUrl: ""                             # (optional) set this parameter if you want to release or push your application during build
-
+  inferBuildTool: true
 
 ### Step-specific configuration
 steps:
-    kanikoExecute:
-      dockerfilePath: "Docker"                              # (optional) default: "Dockerfile"
+  mavenExecute:
+    dockerImage: devxci/mbtci:1.0.14
+
+  artifactPrepareVersion:
+    versioningType: cloud_noTag
 
 ### Stage-specific configuration
 stages:
-    "Confirm":
-        manualConfirmation: false
-    Build:
-        kanikoExecute: true                             # true, if you want to turn the build stage on for creating a container image (default: false)
+  'Confirm':
+    manualConfirmation: false
 
-    Additional Unit Tests:
-        karmaExecuteTests: false # true, if you want to execute the Karma Test Runner (default: false)
-        npmExecuteScripts: false # true, if you want to execute test scripts that are defined in step npmExecuteScripts
+#  Integration:
+#    credentials:
+#      - alias: 'mySystemAlias'
+#        credentialId: 'mySystemCredentialsId'
 
-    # Stages configuration specific only to the "kubectl" deployment tool
-  
-    Acceptance:
-      kubernetesDeploy: false                             # true, if you want to turn the acceptance stage on for executing automated end-to-end acceptance tests (default: false)
-      kubeConfigSecretTextCredentialsId: "AWS-ECR" 
-      deployTool: "kubectl" 
-      namespace: "default"                           # specify the name of the Kubernetes namespace where you want to test your application (default: "default")
-      createDockerRegistrySecret: true                   # (optional) true, if you want to save the secret in your Kubernetes cluster
-      appTemplate: "k8s/deployment.yaml"          # enter the path to your apptemplate.yaml file
-      deployCommand: "apply"                             # (optional) or "replace" if you want to update and replace an already existing resource (default: apply) 
-      force: false                                        # (only for deployCommand "replace") true, if you want to add a force tag to your deployment (default: true)
-
-    # Stages configuration specific only to the "kubectl" deployment tool
-
-    Release:
-      kubernetesDeploy: true                                # true, if you want to turn the release stage on for deployment to a Kubernetes namespace within the specified Kubernetes cluster (default: false)
-      kubeConfigSecretTextCredentialsId: "AWS-ECR"
-      deployTool: "kubectl"                                   
-      namespace: "default"                              # (optional) specify the name of the Kubernetes namespace (default: "default")
-      createDockerRegistrySecret: true                      # (optional) true, if you want to save the secret in your Kubernetes cluster
-      appTemplate: "k8s/deployment.yaml"             # enter the path to your apptemplate.yaml file
-      deployCommand: "apply"                                # (optional) or "replace" if you want to update and replace an already existing resource (default: apply) 
-      force: true                                           # (only for deployCommand "replace") true, if you want to add a force tag to your deployment
+#  Release:
+#    cfTargets:
+#      - org: 'myOrg'
+#        space: 'mySpace'
+#        apiEndpoint: 'https://'
+#        appName: 'myAppName'
+#        manifest: 'manifest.yml'
+#        credentialsId: 'myDeploymentCredentialsId'
