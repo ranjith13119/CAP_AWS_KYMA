@@ -19,6 +19,15 @@
                     "localUri": "localService/metadata.xml",
                     "odataVersion": "2.0"
                 }
+            },
+            "kymaService": {
+                "uri": "v2/catalog-service-latest/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
             }
         },
         "crossNavigation": {
@@ -81,6 +90,11 @@
             },
             "": {
                 "dataSource": "mainService",
+                "preload": true,
+                "settings": {}
+            },
+            "kymaModel": {
+                "dataSource": "kymaService",
                 "preload": true,
                 "settings": {}
             }

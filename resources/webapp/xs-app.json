@@ -7,7 +7,7 @@
             "destination": "Northwind"
         },
         {
-            "source": "^/catalog-service-latest/(.*)$",
+            "source": "^/v2/catalog-service-latest/(.*)$",
             "destination": "cap-kyma-service",
             "authenticationType": "xsuaa"
         },
