@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html5appdeployer
+  labels:
+    app: html5appdeployer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: html5appdeployer
+  template:
+    metadata:
+      labels:
+        app: html5appdeployer
+    spec:
+      imagePullSecrets:
+        - regcred
+      volumes:
+        - name: html5-repo-app-host-volume
+          secret:
+              secretName: kyma-app-host-binding
+        - name: xsuaa-volume
+          secret:
+              secretName: kyma-xsuaa-binding
+        - name: destination-volume
+          secret:
+              secretName: kyma-destination-instance
+      containers:
+        - name: html5appdeployer
+          image: <Image>
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "32Mi"
+          env:
+            - name: SAP_CLOUD_SERVICE
+              value: aws.kyma.fioriawskyma
+            - name: BACKEND_DESTINATIONS
+              value: "[{
+              \"Name\":\"cap-kyma-service\",
+              \"Description\":\"my kyma backend\",
+              \"Type\":\"HTTP\",
+              \"ProxyType\":\"Internet\",
+              \"URL\":\"https://capkyma.c-89ed0f4.kyma.ondemand.com\",
+              \"Authentication\":\"NoAuthentication\",
+              \"HTML5.forwardAuthToken\": true}]"
+          volumeMounts:
+            - name: html5-repo-app-host-volume
+              mountPath: /etc/secrets/sapcp/html5-apps-repo/kyma-app-host-instance
+              readOnly: true 
+            - name: xsuaa-volume
+              mountPath: /etc/secrets/sapcp/xsuaa/kyma-xsuaa-instance
+              readOnly: true
+            - name: destination-volume
+              mountPath: /etc/secrets/sapcp/destination/kyma-destination-instance
+              readOnly: true
+        
+--- 
+
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: kyma-xsuaa-instance
+spec:
+  clusterServiceClassExternalName: xsuaa
+  clusterServicePlanExternalName: application
+  parameters:
+    xsappname: awskymafioriawskyma
+    tenant-mode: shared
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: kyma-xsuaa-binding
+spec:
+  instanceRef:
+    name: kyma-xsuaa-instance
+
+--- 
+
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: kyma-app-host-instance
+spec:
+  clusterServiceClassExternalName: html5-apps-repo
+  clusterServicePlanExternalName: app-host
+
+--- 
+
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: kyma-app-host-binding
+spec:
+  instanceRef:
+    name: kyma-app-host-instance
+--- 
+
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: kyma-destination-instance
+spec:
+  clusterServiceClassExternalName: destination
+  clusterServicePlanExternalName: lite
+  parameters:
+    HTML5Runtime_enabled: true
+    version: "1.0.0"
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: kyma-destination-binding
+spec:
+  instanceRef:
+    name: kyma-destination-instance
