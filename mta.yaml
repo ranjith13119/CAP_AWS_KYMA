@@ -1,5 +1,5 @@
 ---
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: kyma2
 version: 1.0.0
 description: "A simple CAP project."
@@ -13,6 +13,26 @@ build-parameters:
         - npx -p @sap/cds-dk cds build --production
 
 modules:
+  #### App Router used to authentication
+  - name: kyma2-app-router
+    type: nodejs
+    path: kyma2-approuter
+    build-parameters:
+      ignore: ["node_modules/"]
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: kyma2-uaa
+      - name: kyma2-db
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          strictSSL: false
+          name: srv_api
+          url: ~{srv-url}
+
   - name: kyma2-srv
     type: nodejs
     path: gen/srv
