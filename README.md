@@ -13,6 +13,7 @@ File or Folder | Purpose
 `Dockerfile` | configuration to create a image on AWS ECR
 `kyma2\.github\workflows\deploy.yml` | Github pipeline setup to Build, tag, and push image to Amazon ECR
 `deployment_kube.yaml` | Kubernets deployment configuration file
+`FIORI Kyma deployment Repository` | https://github.com/ranjith13119/CAP_AWS_KYMA/tree/fiorikymanew
 
 ## Steps
 
