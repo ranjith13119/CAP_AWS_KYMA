@@ -17,7 +17,7 @@ spec:
         - name: regcred
       containers:
         - name: kyma2
-          image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:8e22f760bd4560571e38f65cc8599ccd29891b38
+          image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:64bf1c09b829077b314f7b0eef5273713b628779
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -64,6 +64,10 @@ spec:
         description: "Admin Role to access the Books entityset"
         scope-references:
           - "$XSAPPNAME.ADMIN"
+      - name: TOKEN_EXCHANGE
+        description: Token exchange
+        scope-references:
+          - uaa.user
 
 ---
 apiVersion: services.cloud.sap.com/v1alpha1
