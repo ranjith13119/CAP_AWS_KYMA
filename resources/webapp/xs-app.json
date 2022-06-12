@@ -3,13 +3,15 @@
     "authenticationMethod": "route",
     "routes": [
         {
-            "source": "^/V2/Northwind/Northwind.svc/(.*)$",
-            "destination": "Northwind"
-        },
-        {
             "source": "^/v2/catalog-service-latest/(.*)$",
             "destination": "cap-kyma-service",
-            "authenticationType": "xsuaa"
+            "authenticationType": "xsuaa",
+            "csrfProtection": true,
+            "target": "$1"
+        },
+        {
+            "source": "^/V2/Northwind/Northwind.svc/(.*)$",
+            "destination": "Northwind"
         },
         {
             "source": "^/resources/(.*)$",
