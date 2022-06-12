@@ -28,7 +28,7 @@ spec:
             secretName: kyma-destination-binding
       containers:
         - name: html5appdeployer
-          image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/customfiori:923d47cf0dfe65f22b942e091856b2f76d4d6a52
+          image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/customfiori:4c7c0513ae0ab109f3e82db92fd4aeba9172ee17
           imagePullPolicy: Always
           ports:
             - name: http
