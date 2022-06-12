@@ -59,6 +59,8 @@ spec:
     scopes:
       - name: "$XSAPPNAME.ADMIN"
         description: "ADMIN"
+      - name: uaa.user
+        description: uaa
     role-templates:
       - name: "ADMIN"
         description: "Admin Role to access the Books entityset"
