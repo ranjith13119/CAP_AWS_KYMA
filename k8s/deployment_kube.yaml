@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: kyma2
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: kyma2
@@ -15,24 +16,86 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-      - name: kyma2
-        image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:8e22f760bd4560571e38f65cc8599ccd29891b38
-        imagePullPolicy: Always
-        envFrom:
-          - configMapRef:
-              name: appconfig 
-        resources:
-          limits:
-            memory: "1000Mi"
-          requests:
-            memory: "32Mi"
-        ports:
-        - name: http
-          containerPort: 4004
+        - name: kyma2
+          image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/kyma2:8e22f760bd4560571e38f65cc8599ccd29891b38
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: appconfig
+          resources:
+            limits:
+              memory: "1000Mi"
+            requests:
+              memory: "32Mi"
+          ports:
+            - name: http
+              containerPort: 4004
+          volumeMounts:
+            - name: xsuaa-volume
+              mountPath: /etc/secrets/sapcp/xsuaa/kyma2-uaa-instance
+              readOnly: true
+            - name: destination-volume
+              mountPath: /etc/secrets/sapcp/destination/kyma2-destination-instance
+      volumes:
+        - name: xsuaa-volume
+          secret:
+            secretName: kyma2-uaa-binding
+        - name: destination-volume
+          secret:
+            secretName: kyma2-destination-binding
+
+---
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: kyma2-uaa-instance
+  namespace: default
+spec:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  parameters:
+    xsappname: kyma2-app
+    tenant-mode: dedicated
+    scopes:
+      - name: "$XSAPPNAME.ADMIN"
+        description: "ADMIN"
+    role-templates:
+      - name: "ADMIN"
+        description: "Admin Role to access the Books entityset"
+        scope-references:
+          - "$XSAPPNAME.ADMIN"
+
+---
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: kyma2-uaa-binding
+  namespace: default
+spec:
+  serviceInstanceName: kyma2-uaa-instance
+
+---
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: kyma2-destination-instance
+spec:
+  serviceOfferingName: destination
+  servicePlanName: lite
+  parameters:
+    HTML5Runtime_enabled: true
+    version: 1.0.0
+---
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: kyma2-destination-binding
+spec:
+  serviceInstanceName: kyma2-destination-instance
 
 ---
 # to expose our service outside the kyma
-apiVersion: v1 
+apiVersion: v1
 kind: Service
 metadata:
   name: kyma2
@@ -42,7 +105,6 @@ spec:
   selector:
     app: kyma2
   ports:
-  - port: 4004
-    targetPort: 4004
-    name: http
-
+    - port: 4004
+      targetPort: 4004
+      name: http
