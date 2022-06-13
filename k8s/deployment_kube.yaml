@@ -48,8 +48,7 @@ spec:
 apiVersion: services.cloud.sap.com/v1alpha1
 kind: ServiceInstance
 metadata:
-  name: kyma2-uaa-instance
-  namespace: default
+  name: kyma-xsuaa-instance
 spec:
   serviceOfferingName: xsuaa
   servicePlanName: application
@@ -70,6 +69,19 @@ spec:
         description: Token exchange
         scope-references:
           - uaa.user
+    oauth2-configuration:
+      grant-types:
+        - authorization_code
+        - client_credentials
+        - password
+        - refresh_token
+        - urn:ietf:params:oauth:grant-type:saml2-bearer
+        - user_token
+        - client_x509
+        - urn:ietf:params:oauth:grant-type:jwt-bearer
+      redirect-uris:
+        - https://*/**
+        - https://*.launchpad.cfapps.us10.hana.ondemand.com/**
 
 ---
 apiVersion: services.cloud.sap.com/v1alpha1
