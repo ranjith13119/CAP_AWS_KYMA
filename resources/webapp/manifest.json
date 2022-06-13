@@ -21,7 +21,7 @@
                 }
             },
             "kymaService": {
-                "uri": "/v2/catalog-service-latest/",
+                "uri": "v2/catalog-service-latest/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
