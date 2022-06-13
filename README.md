@@ -32,3 +32,4 @@ File or Folder | Purpose
 - `kubectl rollout status deployment/kyma2`
 - `kubectl rollout history deployment/kyma2`
 - `kubectl rollout undo deployment/kyma2`
+- 
