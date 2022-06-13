@@ -32,4 +32,22 @@ File or Folder | Purpose
 - `kubectl rollout status deployment/kyma2`
 - `kubectl rollout history deployment/kyma2`
 - `kubectl rollout undo deployment/kyma2`
-- 
+
+KYMA Enviroment Screenshots:
+
+![image](https://user-images.githubusercontent.com/30929584/173349148-09a0023f-861a-4f5a-8581-3a6af7b13637.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349292-02f3165a-8ddf-47cd-9cb6-741b4d618dc2.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349336-cb8bee9f-c89e-4804-9c29-b6b703a0ef07.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349477-fe1d6ce9-a804-4c04-ac03-0269bcb635f1.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349775-38df04c5-7949-4aa5-b718-b2c2d29128d6.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349895-91b166ac-61d2-45e0-bd8d-42ae70cbecde.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349568-5e34835b-63fe-4d4f-b2ee-527922fc782c.png)
+
+![image](https://user-images.githubusercontent.com/30929584/173349682-f34b0d91-581e-430d-87e6-75c6534fc3de.png)
+
