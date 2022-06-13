@@ -18,10 +18,10 @@ cds.on("bootstrap", (app) =>
             //Exposing the service as a Swagger api
             basePath: "/swagger",
             diagram: "true",
-        })
-    ),
-    passport.initialize(),
-    passport.authenticate('JWT', { session: false })
+        }),
+        passport.initialize(),
+        passport.authenticate('JWT', { session: false })
+    )
 );
 
 module.exports = cds.server;
