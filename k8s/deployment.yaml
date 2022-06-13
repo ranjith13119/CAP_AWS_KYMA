@@ -22,7 +22,7 @@ spec:
               secretName: kyma-app-host-binding
         - name: xsuaa-volume
           secret:
-              secretName: kyma-xsuaa-binding
+            secretName: kyma2-uaa-binding
         - name: destination-volume
           secret:
             secretName: kyma-destination-binding
@@ -55,7 +55,7 @@ spec:
               mountPath: /etc/secrets/sapcp/html5-apps-repo/kyma-app-host-instance
               readOnly: true 
             - name: xsuaa-volume
-              mountPath: /etc/secrets/sapcp/xsuaa/kyma-xsuaa-instance
+              mountPath: /etc/secrets/sapcp/xsuaa/kyma2-uaa-instance
               readOnly: true
             - name: destination-volume
               mountPath: /etc/secrets/sapcp/destination/kyma-destination-instance
