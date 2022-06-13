@@ -47,6 +47,13 @@ modules:
     requires:
       - name: kyma2-db
       - name: kyma2-uaa
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          strictSSL: false
+          name: srv_api
+          url: ~{srv-url}
 
   - name: kyma2-db-deployer
     type: hdb
