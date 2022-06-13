@@ -22,6 +22,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: appconfig
+            - configMapRef:
+                name: appconfigxsuaa
           resources:
             limits:
               memory: "1000Mi"
@@ -81,6 +83,7 @@ spec:
         - urn:ietf:params:oauth:grant-type:jwt-bearer
       redirect-uris:
         - https://*/**
+        - https://**/**
         - https://*.launchpad.cfapps.us10.hana.ondemand.com/**
 
 ---
