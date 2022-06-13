@@ -44,9 +44,13 @@ spec:
               \"Description\":\"my kyma backend\",
               \"Type\":\"HTTP\",
               \"ProxyType\":\"Internet\",
-              \"URL\":\"https://capkyma.c-89ed0f4.kyma.ondemand.com\",
-              \"Authentication\":\"NoAuthentication\",
-              \"HTML5.forwardAuthToken\": true}]"
+              \"tokenServiceURLType\": \"Dedicated\",
+              \"Authentication\":\"OAuth2UserTokenExchange\",
+              \"HTML5.DynamicDestination\": true,
+              \"clientId\": \"sb-kyma2-app!t85239\",
+              \"clientSecret\":\"9d5e4d37-2ea8-40fa-a404-d186d6e62c03$0TQw3J-1DIUmpSsB73DrJc5RBfEGMRXwynb1BVNsyf4=\",
+              \"tokenServiceURL\": \"https://9ec9c0b6trial.authentication.us10.hana.ondemand.com/oauth/token\",
+              \"URL\":\"https://capkyma.c-89ed0f4.kyma.ondemand.com\"}]"
           volumeMounts:
             - name: html5-repo-app-host-volume
               mountPath: /etc/secrets/sapcp/html5-apps-repo/kyma-app-host-instance
