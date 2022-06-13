@@ -6,7 +6,7 @@
             "source": "^/v2/catalog-service-latest/(.*)$",
             "destination": "cap-kyma-service",
             "authenticationType": "xsuaa",
-            "csrfProtection": true
+            "csrfProtection": false
         },
         {
             "source": "^/V2/Northwind/Northwind.svc/(.*)$",
