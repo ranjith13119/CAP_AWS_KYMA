@@ -30,9 +30,6 @@ spec:
         - name: html5appdeployer
           image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/customfiori:4c7c0513ae0ab109f3e82db92fd4aeba9172ee17
           imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 80
           resources:
             limits:
               memory: "500Mi"
@@ -66,28 +63,6 @@ spec:
 apiVersion: services.cloud.sap.com/v1alpha1
 kind: ServiceInstance
 metadata:
-  name: kyma-xsuaa-instance
-spec:
-  serviceOfferingName: xsuaa
-  servicePlanName: application
-  parameters:
-    xsappname: awskymafioriawskyma
-    tenant-mode: shared
-
----
-apiVersion: services.cloud.sap.com/v1alpha1
-kind: ServiceBinding
-metadata:
-  name: kyma-xsuaa-binding
-spec:
-  instanceRef:
-    name: kyma-xsuaa-instance
-
---- 
-
-apiVersion: services.cloud.sap.com/v1alpha1
-kind: ServiceInstance
-metadata:
   name: kyma-app-host-instance
 spec:
   serviceOfferingName: html5-apps-repo
@@ -101,8 +76,7 @@ kind: ServiceBinding
 metadata:
   name: kyma-app-host-binding
 spec:
-  instanceRef:
-    name: kyma-app-host-instance
+  serviceInstanceName: kyma-app-host-instance
 --- 
 
 apiVersion: services.cloud.sap.com/v1alpha1
@@ -124,17 +98,3 @@ metadata:
 spec:
   serviceInstanceName: kyma-destination-instance
 
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: html5appdeployer
-  labels:
-    app: html5appdeployer
-spec:
-  ports:
-    - name: http
-      port: 80
-  selector:
-    app: html5appdeployer
