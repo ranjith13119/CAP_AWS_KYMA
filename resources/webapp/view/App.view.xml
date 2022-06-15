@@ -23,15 +23,10 @@
                                 width="12em">
                                 <Text text="Book ID" />
                             </Column>
-                            <Column
-                                minScreenWidth="Tablet"
-                                demandPopin="true">
+                            <Column>
                                 <Text text="Book Name" />
                             </Column>
-                            <Column
-                                minScreenWidth="Desktop"
-                                demandPopin="true"
-                                hAlign="End">
+                            <Column >
                                 <Text text="Book Cost" />
                             </Column>
                         </columns>
