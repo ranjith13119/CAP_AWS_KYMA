@@ -115,7 +115,7 @@ spec:
   serviceInstanceName: kyma2-destination-instance
 
 ---
-# to expose our service outside the kyma
+# to expose our service outside the kyma env
 apiVersion: v1
 kind: Service
 metadata:
