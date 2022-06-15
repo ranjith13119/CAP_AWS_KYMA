@@ -30,6 +30,9 @@ spec:
         - name: html5appdeployer
           image: 860444633182.dkr.ecr.us-east-1.amazonaws.com/customfiori:4c7c0513ae0ab109f3e82db92fd4aeba9172ee17
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: appconfigxsuaa
           resources:
             limits:
               memory: "500Mi"
