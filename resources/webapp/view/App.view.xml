@@ -2,6 +2,47 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <content />
+        <content >
+            <Table id="idProductsTable"
+            inset="false"
+            items="{
+                path: 'kymaModel>/Books',
+                sorter: {
+                    path: 'stock'
+                }
+            }" class= "sapUiSmallMarginTop">
+                <infoToolbar>
+                    <OverflowToolbar>
+                        <Label text="This sample applcation is pulling the data from CAP service which is deployed on KYMA"/>
+                    </OverflowToolbar>
+                </infoToolbar>
+                <columns>
+                    <Column
+                        width="12em">
+                        <Text text="Book ID" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true">
+                        <Text text="Book Name" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                        hAlign="End">
+                        <Text text="Book Cost" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{kymaModel>ID}" />
+                            <Text text="{kymaModel>title}" />
+                            <Text text="{kymaModel>stock}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
     </Page>
 </mvc:View>
