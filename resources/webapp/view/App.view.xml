@@ -1,7 +1,7 @@
 <mvc:View controllerName="aws.kyma.fioriawskyma.controller.App"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">  
-    <App id="app">
+    <App id="App">
         <pages>
             <Page id="Kyma" title="{i18n>title}">
                 <content >
